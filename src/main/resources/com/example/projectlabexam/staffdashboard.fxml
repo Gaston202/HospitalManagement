@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.projectlabexam.StaffDashboardController"
+            style="-fx-background-color: #f5f7fa;">
+
+    <BorderPane AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+        <!-- Header -->
+        <top>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #2c3e50; -fx-padding: 15px;">
+                <Label text="HOTEL STAFF DASHBOARD" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="Staff: John Smith" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Button text="Go to Hotel Dashboard" onAction="#switchToHotel" />
+            </HBox>
+        </top>
+
+        <!-- Navigation Tabs -->
+        <center>
+            <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #ffffff;">
+                <tabs>
+                    <!-- View Rooms Tab -->
+                    <Tab text="View Rooms">
+                        <VBox spacing="15.0">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20" />
+                            </padding>
+
+                            <Label text="Room Status Overview" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+                            <HBox spacing="15.0">
+                                <VBox spacing="5.0" style="-fx-background-color: #e8f5e9; -fx-background-radius: 5px; -fx-padding: 10px;">
+                                    <Label text="Available" style="-fx-font-weight: bold; -fx-text-fill: #2e7d32;"/>
+                                    <Label text="8 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #2e7d32;"/>
+                                </VBox>
+
+                                <VBox spacing="5.0" style="-fx-background-color: #ffebee; -fx-background-radius: 5px; -fx-padding: 10px;">
+                                    <Label text="Occupied" style="-fx-font-weight: bold; -fx-text-fill: #c62828;"/>
+                                    <Label text="12 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #c62828;"/>
+                                </VBox>
+
+                                <VBox spacing="5.0" style="-fx-background-color: #fff8e1; -fx-background-radius: 5px; -fx-padding: 10px;">
+                                    <Label text="Cleaning" style="-fx-font-weight: bold; -fx-text-fill: #f57c00;"/>
+                                    <Label text="3 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #f57c00;"/>
+                                </VBox>
+                            </HBox>
+
+                            <TableView fx:id="roomTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="roomNumberColumn" text="Room #" prefWidth="80"/>
+                                    <TableColumn fx:id="roomTypeColumn" text="Room Type" prefWidth="120"/>
+                                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+                                    <TableColumn fx:id="lastCleanedColumn" text="Last Cleaned" prefWidth="150"/>
+                                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="Loading room data..."/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- View Bookings Tab -->
+                    <Tab text="View Bookings">
+                        <VBox spacing="15.0">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20" />
+                            </padding>
+
+                            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                <Label text="Active Bookings" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <TextField fx:id="bookingSearchField" promptText="Search bookings..." prefWidth="200"/>
+                                <Button text="Search" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+
+
+                            </HBox>
+
+                            <TableView fx:id="bookingTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="bookingIdColumn" text="Booking ID" prefWidth="100"/>
+                                    <TableColumn fx:id="customerNameColumn" text="Guest Name" prefWidth="150"/>
+                                    <TableColumn fx:id="bookingRoomColumn" text="Room #" prefWidth="80"/>
+                                    <TableColumn fx:id="checkInColumn" text="Check-in" prefWidth="120"/>
+                                    <TableColumn fx:id="checkOutColumn" text="Check-out" prefWidth="120"/>
+                                    <TableColumn fx:id="bookingStatusColumn" text="Status" prefWidth="100"/>
+                                    <TableColumn fx:id="bookingActionsColumn" text="Actions" prefWidth="120"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- Update Room Status Tab -->
+                    <Tab text="Update Room Status">
+                        <HBox spacing="20.0" alignment="CENTER">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20" />
+                            </padding>
+
+                            <VBox spacing="15.0" alignment="CENTER" maxWidth="400"
+                                  style="-fx-background-color: white; -fx-background-radius: 8px; -fx-padding: 20px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 10);">
+                                <Label text="Update Room Status" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+                                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                    <Label text="Select Room:" />
+                                    <ComboBox fx:id="roomSelect" promptText="Choose a room" prefWidth="200" />
+                                </HBox>
+
+                                <Label fx:id="currentStatusLabel" text="Current Status: Occupied" style="-fx-text-fill: #c62828;"/>
+
+                                <Label text="Change Status To:" />
+
+                                <HBox spacing="10.0" alignment="CENTER">
+                                    <Button fx:id="btnAvailable" text="Available" prefWidth="120"
+                                            style="-fx-background-color: #4caf50; -fx-text-fill: white;"/>
+                                    <Button fx:id="btnOccupied" text="Occupied" prefWidth="120"
+                                            style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+                                    <Button fx:id="btnCleaning" text="Cleaning" prefWidth="120"
+                                            style="-fx-background-color: #ff9800; -fx-text-fill: white;"/>
+                                </HBox>
+
+                                <Separator />
+
+                                <Label text="Additional Notes:" />
+                                <TextArea fx:id="statusNotesArea" promptText="Enter any additional notes about this room status change..." prefHeight="100" />
+
+                                <Button fx:id="updateStatusButton" text="Update Status" prefWidth="200"
+                                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                            </VBox>
+                        </HBox>
+                    </Tab>
+
+                    <!-- Access Logs Tab -->
+                    <Tab text="Access Logs">
+                        <VBox spacing="15.0">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20" />
+                            </padding>
+
+                            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                <Label text="Room Access History" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <DatePicker fx:id="logDateFilter" promptText="Filter by date" />
+                                <Button fx:id="applyFilterButton" text="Apply Filter" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                            </HBox>
+
+                            <TableView fx:id="accessLogTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="timestampColumn" text="Timestamp" prefWidth="150"/>
+                                    <TableColumn fx:id="logRoomColumn" text="Room #" prefWidth="80"/>
+                                    <TableColumn fx:id="accessTypeColumn" text="Access Type" prefWidth="120"/>
+                                    <TableColumn fx:id="logCustomerColumn" text="Person" prefWidth="150"/>
+                                    <TableColumn fx:id="detailsColumn" text="Details" prefWidth="200"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+                </tabs>
+            </TabPane>
+        </center>
+
+        <!-- Footer -->
+        <bottom>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #34495e; -fx-padding: 10px;">
+                <Label text="Hotel Management System v1.0" textFill="WHITE">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="Last updated: 2025-04-18 14:30" textFill="WHITE">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Label>
+            </HBox>
+        </bottom>
+    </BorderPane>
+</AnchorPane>

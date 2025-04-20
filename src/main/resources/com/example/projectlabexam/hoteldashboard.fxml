@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.projectlabexam.DashboardController"
+            stylesheets="@style.css">
+
+    <!-- Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header-bar">
+            <Label text="🏨 Customer Dashboard" styleClass="header-title" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;"/>
+            <Button text="Go to Staff Dashboard" onAction="#switchToStaff" />
+        </HBox>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="20" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <TitledPane text="Book a Room" expanded="true">
+                <VBox spacing="10">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                    <HBox spacing="10">
+                        <Label text="Select Room:"/>
+                        <ComboBox fx:id="roomComboBox"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Check-in:"/>
+                        <DatePicker fx:id="checkInDate"/>
+                        <Label text="Check-out:"/>
+                        <DatePicker fx:id="checkOutDate"/>
+                    </HBox>
+
+                    <Button text="Book" onAction="#handleBooking"/>
+                </VBox>
+            </TitledPane>
+
+            <TitledPane text="View My Booking" expanded="true">
+                <VBox spacing="10">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                    <Label fx:id="bookingDetails"/>
+                </VBox>
+            </TitledPane>
+
+            <Button fx:id="keycardButton" text="Use Keycard" onAction="#handleKeycardUse" disable="true"/>
+
+        </VBox>
+    </center>
+
+</BorderPane>

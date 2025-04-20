@@ -1,0 +1,59 @@
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-color: #f4f7fa; /* Soft light background */
+}
+
+/* Header bar */
+.header-bar {
+    -fx-background-color: #1e3a8a; /* Dark blue background */
+    -fx-padding: 20; /* Increased padding for a bigger header */
+}
+
+.header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 48px; /* Larger font size for header text */
+    -fx-font-weight: bold;
+}
+
+/* TitledPane look */
+.titled-pane {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #4f4f4f; /* Darker gray for text */
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.2, 0, 1);
+}
+
+.titled-pane > .title {
+    -fx-background-color: #8aacc8; /* Soft light blue */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+    -fx-background-radius: 8 8 0 0;
+}
+
+/* General buttons */
+.button {
+    -fx-background-color: #5f6368; /* Darker muted tone */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.button:disabled {
+    -fx-background-color: #e0e0e0; /* Soft gray for disabled button */
+}
+
+/* Inputs */
+.date-picker, .combo-box {
+    -fx-background-radius: 6;
+    -fx-padding: 6;
+    -fx-background-color: #f0f4f8; /* Very light gray-blue background */
+}
+
+.label {
+    -fx-text-fill: #555555; /* Dark gray for text */
+    -fx-font-size: 13px;
+}
