@@ -16,7 +16,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        switchScene("staffdashboard.fxml");
+        switchScene("login.fxml");
         primaryStage.show();
     }
 

@@ -13,7 +13,8 @@
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header-bar">
             <Label text="🏨 Customer Dashboard" styleClass="header-title" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;"/>
-            <Button text="Go to Staff Dashboard" onAction="#switchToStaff" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Back to Login" onAction="#backToLogin" />
         </HBox>
     </top>
 

@@ -29,7 +29,8 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Button text="Go to Hotel Dashboard" onAction="#switchToHotel" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="Back to Login" onAction="#backToLogin" />
             </HBox>
         </top>
 
@@ -49,17 +50,17 @@
                             <HBox spacing="15.0">
                                 <VBox spacing="5.0" style="-fx-background-color: #e8f5e9; -fx-background-radius: 5px; -fx-padding: 10px;">
                                     <Label text="Available" style="-fx-font-weight: bold; -fx-text-fill: #2e7d32;"/>
-                                    <Label text="8 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #2e7d32;"/>
+                                    <Label fx:id="availableCountLabel" text="0 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #2e7d32;"/>
                                 </VBox>
 
                                 <VBox spacing="5.0" style="-fx-background-color: #ffebee; -fx-background-radius: 5px; -fx-padding: 10px;">
                                     <Label text="Occupied" style="-fx-font-weight: bold; -fx-text-fill: #c62828;"/>
-                                    <Label text="12 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #c62828;"/>
+                                    <Label fx:id="occupiedCountLabel" text="0 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #c62828;"/>
                                 </VBox>
 
                                 <VBox spacing="5.0" style="-fx-background-color: #fff8e1; -fx-background-radius: 5px; -fx-padding: 10px;">
                                     <Label text="Cleaning" style="-fx-font-weight: bold; -fx-text-fill: #f57c00;"/>
-                                    <Label text="3 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #f57c00;"/>
+                                    <Label fx:id="cleaningCountLabel" text="0 Rooms" style="-fx-font-size: 16px; -fx-text-fill: #f57c00;"/>
                                 </VBox>
                             </HBox>
 

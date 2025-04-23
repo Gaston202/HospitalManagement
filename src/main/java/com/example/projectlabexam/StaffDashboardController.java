@@ -23,6 +23,9 @@ public class StaffDashboardController {
     @FXML private TableColumn<Room, String> statusColumn;
     @FXML private TableColumn<Room, String> lastCleanedColumn;
     @FXML private TableColumn<Room, Void> actionsColumn;
+    @FXML private Label availableCountLabel;
+    @FXML private Label occupiedCountLabel;
+    @FXML private Label cleaningCountLabel;
 
     // Booking View Tab
     @FXML private TableView<Booking> bookingTable;
@@ -86,6 +89,11 @@ public class StaffDashboardController {
 
     public void switchToHotel(ActionEvent event) {
         App.switchScene("hoteldashboard.fxml");
+    }
+
+    @FXML
+    private void backToLogin() {
+        App.switchScene("login.fxml");
     }
 
     private void setupRoomsTab() {
@@ -238,15 +246,34 @@ public class StaffDashboardController {
             String newStatus = getCurrentSelectedStatus();
             String notes = statusNotesArea.getText();
 
-            updateRoomStatus(roomNumber, newStatus, notes);
+            // Prevent updating to the same status
+            Room selectedRoom = null;
+            for (Room room : allRooms) {
+                if (room.getRoomNumber().equals(roomNumber)) {
+                    selectedRoom = room;
+                    break;
+                }
+            }
+            if (selectedRoom == null) {
+                showAlert("Error", "Room not found.");
+                return;
+            }
+            if (selectedRoom.getStatus().equals(newStatus)) {
+                showAlert("Error", "Room is already in status '" + newStatus + "'.");
+                return;
+            }
 
-            // Clear form
-            statusNotesArea.clear();
-            showAlert("Success", "Room " + roomNumber + " status updated to " + newStatus);
-
-            // Log this action
-            addAccessLog(roomNumber, "Status Change", "Staff",
-                    "Status changed to " + newStatus + (notes.isEmpty() ? "" : ": " + notes));
+            try {
+                updateRoomStatus(roomNumber, newStatus, notes);
+                // Clear form
+                statusNotesArea.clear();
+                showAlert("Success", "Room " + roomNumber + " status updated to " + newStatus);
+                // Log this action
+                addAccessLog(roomNumber, "Status Change", "Staff",
+                        "Status changed to " + newStatus + (notes.isEmpty() ? "" : ": " + notes));
+            } catch (Exception ex) {
+                showAlert("Error", "Failed to update room status: " + ex.getMessage());
+            }
         });
     }
 
@@ -279,23 +306,34 @@ public class StaffDashboardController {
 
     private void loadRoomsFromDatabase() {
         String query = "SELECT r.id, r.number, r.status FROM room r";
+        int availableCount = 0;
+        int occupiedCount = 0;
+        int cleaningCount = 0;
         try (PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
+            allRooms.clear();
             while (rs.next()) {
                 String roomNumber = rs.getString("number");
                 String status = rs.getString("status");
 
                 // For room type, use a derivation based on room number for now
-                // In a real system, you'd have a room_type table or field
                 String roomType = determineRoomType(roomNumber);
-
-                // For last cleaned, we would ideally have a separate table
-                // For now, we'll use a placeholder value
                 String lastCleaned = status.equals("Cleaning") ? "In Progress" : "2025-04-18 08:30";
 
                 allRooms.add(new Room(roomNumber, roomType, status, lastCleaned));
+
+                // Count by status
+                switch (status) {
+                    case "Available": availableCount++; break;
+                    case "Occupied": occupiedCount++; break;
+                    case "Cleaning": cleaningCount++; break;
+                }
             }
+            // Update UI labels if they exist
+            if (availableCountLabel != null) availableCountLabel.setText(availableCount + " Rooms");
+            if (occupiedCountLabel != null) occupiedCountLabel.setText(occupiedCount + " Rooms");
+            if (cleaningCountLabel != null) cleaningCountLabel.setText(cleaningCount + " Rooms");
         } catch (SQLException e) {
             System.out.println("Error loading rooms: " + e.getMessage());
             showAlert("Database Error", "Failed to load rooms: " + e.getMessage());
@@ -471,19 +509,19 @@ public class StaffDashboardController {
         }
 
         // Add the log to the database
-        String query = "INSERT INTO accesslog (access_time, room_id, customer_id) VALUES (?, ?, ?)";
+        // Now supports staff_id and customer_id
+        String query = "INSERT INTO accesslog (access_time, room_id, customer_id, staff_id) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             stmt.setInt(2, roomId);
 
-            // For simplicity, we're setting customer_id to NULL for staff access
             if (person.equals("Staff")) {
-                stmt.setNull(3, java.sql.Types.INTEGER);
+                stmt.setNull(3, java.sql.Types.INTEGER); // customer_id
+                stmt.setInt(4, 1); // staff_id, use actual staff id in real app
             } else {
-                // In a real app, you'd look up the customer ID based on the name
-                // For now, we'll use a placeholder value
-                stmt.setInt(3, 1);  // Assuming customer ID 1 exists
+                stmt.setInt(3, 1); // customer_id, use actual customer id in real app
+                stmt.setNull(4, java.sql.Types.INTEGER); // staff_id
             }
 
             int rowsAffected = stmt.executeUpdate();
